@@ -7,24 +7,18 @@
   <meta name="description" content="맥북 프로 16인치(2019), 아이패드 프로 10.5, 닌텐도 스위치 라이트를 지금 써도 괜찮은지 정리한 페이지">
   <link rel="stylesheet" href="style.css">
   <style>
-    main { padding-bottom: 64px; }
-    section { margin-top: 48px; }
+    .center { text-align: center; }
+    .center .t-lead { max-width: var(--text-max); margin: 16px auto 0; }
 
-    .intro { margin-top: 40px; }
-    .intro p { margin-top: 12px; max-width: 36em; }
-    .intro .btn { margin-top: 20px; }
+    /* 첫 화면 */
+    .hero .btn-primary { margin-top: 40px; }
 
     /* 기억에 남을 요소 하나: 출시부터 지금까지의 나이 막대 */
-    .age-chart { margin-top: 32px; }
-    .age-row {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 4px;
-      margin-top: 16px;
-    }
-    .age-row a { color: var(--ink); font-weight: 700; text-decoration: none; }
-    .age-row a:hover { text-decoration: underline; }
-    .age-track { position: relative; height: 36px; border-bottom: 1px solid var(--line); }
+    .age-chart { max-width: 760px; margin: 64px auto 0; }
+    .age-chart h2 { text-align: center; }
+    .age-row { display: grid; gap: 8px; margin-top: 24px; }
+    .age-row a { color: var(--ink); font-weight: 600; }
+    .age-track { position: relative; height: 40px; border-bottom: 1px solid var(--line); }
     .age-bar {
       position: absolute;
       top: 0;
@@ -33,71 +27,98 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding: 0 10px;
+      padding: 0 16px;
       border-radius: var(--radius-control) var(--radius-control) 0 0;
       background: var(--primary);
       color: var(--on-primary);
       font-weight: 700;
       white-space: nowrap;
     }
-    .age-axis {
-      position: relative;
-      height: 24px;
-      margin-top: 6px;
-      font-size: var(--fs-small);
-      color: var(--muted);
-    }
+    .age-axis { position: relative; height: 20px; margin-top: 8px; }
     .age-axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
     .age-axis span:first-child { transform: none; }
     .age-axis span:last-child { transform: translateX(-100%); }
-    @media (min-width: 600px) {
-      .age-row { grid-template-columns: 9em 1fr; align-items: end; gap: 12px; }
-      .age-axis { margin-left: calc(9em + 12px); }
+    @media (min-width: 734px) {
+      .age-row { grid-template-columns: 10em 1fr; align-items: end; gap: 16px; }
+      .age-axis { margin-left: calc(10em + 16px); }
     }
 
-    /* 기기 소개 */
-    .device { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--line); }
-    .device:first-of-type { margin-top: 24px; }
-    .device .lead { margin-top: 8px; max-width: 36em; }
-    .device.is-picked { border-top: 3px solid var(--primary); }
-    .device h3 { margin-top: 24px; }
+    /* 기기 소개 — 세 기기 모두 같은 순서 */
+    .device .pick-mark {
+      display: inline-flex;
+      align-items: center;
+      min-height: 28px;
+      margin-top: 16px;
+      padding: 0 14px;
+      border-radius: var(--radius-capsule);
+      background: var(--primary);
+      color: var(--on-primary);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .device .pick-mark[hidden] { display: none; }
+    .device .t-small:first-child { margin-bottom: 8px; }
 
-    .specs {
+    .specs { max-width: 720px; margin: 40px auto 0; }
+    .specs dl { margin: 0; }
+    .specs .row {
       display: grid;
-      grid-template-columns: minmax(5.5em, auto) 1fr;
-      gap: 6px 16px;
-      margin: 16px 0 0;
+      grid-template-columns: 1fr;
+      padding: 16px 0;
+      border-top: 1px solid var(--line);
     }
-    .specs dt { color: var(--muted); }
+    .specs .row:first-child { padding-top: 0; border-top: 0; }
+    .specs .row:last-child { padding-bottom: 0; }
+    .specs dt { font-size: 14px; line-height: 20px; color: var(--muted); }
     .specs dd { margin: 0; }
+    @media (min-width: 734px) {
+      .specs .row { grid-template-columns: 8em 1fr; gap: 16px; align-items: baseline; }
+    }
 
-    .device ul { margin: 8px 0 0; padding-left: 1.2em; max-width: 36em; }
-    .device li + li { margin-top: 4px; }
+    .notes {
+      display: grid;
+      gap: 40px;
+      max-width: 720px;
+      margin: 40px auto 0;
+    }
+    @media (min-width: 734px) {
+      .notes { grid-template-columns: 1fr 1fr; }
+    }
+    .notes ul { margin: 8px 0 0; padding-left: 1.2em; }
+    .notes li + li { margin-top: 8px; }
+    .notes .full { grid-column: 1 / -1; }
 
     /* 용도로 고르기 */
-    .picker { margin-top: 16px; }
-    .picker fieldset { margin: 0; padding: 0; border: 0; }
-    .picker legend { padding: 0; font-weight: 700; }
-    .choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .picker { max-width: 720px; margin: 40px auto 0; }
+    .picker fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+    .picker legend { padding: 0; font-weight: 600; }
+    .choices { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
     .choices label { position: relative; }
-    .choices input { position: absolute; opacity: 0; inset: 0; margin: 0; }
-    .choices input:checked + span {
-      border-color: var(--primary);
-      background: var(--primary-soft);
-      color: var(--primary);
+    .choices input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+    .choices span {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: var(--radius-capsule);
+      background: var(--paper);
+      color: var(--ink);
+      font-weight: 600;
+      transition: background-color .15s, color .15s;
     }
-    .choices input:focus-visible + span { outline: 2px solid var(--primary); outline-offset: 2px; }
-    .answer { margin-top: 16px; }
+    .choices input:checked + span { background: var(--primary); color: var(--on-primary); }
+    .choices input:focus-visible + span { outline: 2px solid var(--primary); outline-offset: 3px; }
+    .answer { margin-top: 24px; transition: opacity .2s; }
+    .answer:empty { display: none; }
     .answer p + p { margin-top: 8px; }
 
-    footer { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line); }
-    footer p + p { margin-top: 4px; }
+    footer p + p { margin-top: 8px; }
   </style>
 </head>
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="site-name" href="index.html" aria-current="page">아직 쓸 만한 구형 기기</a>
+      <a class="site-name" href="index.html">아직 쓸 만한 구형 기기</a>
       <nav class="site-nav" aria-label="이 페이지 안에서 이동">
         <a href="index.html" aria-current="page">홈</a>
         <a href="#macbook">맥북 프로 16</a>
@@ -108,165 +129,217 @@
     </div>
   </header>
 
-  <main class="wrap">
-    <div class="intro">
-      <h1>새 기기를 사기 전에, 서랍 속 기기부터</h1>
-      <p>맥북 프로 16인치(2019), 아이패드 프로 10.5, 닌텐도 스위치 라이트. 셋 다 출시된 지 몇 년이 지났지만 지금도 하루 일을 해낼 수 있어요. 무엇을 아직 잘하고, 어디서 한계가 오는지 정리했어요.</p>
-      <a class="btn btn-primary" href="#pick">내 용도에 맞는 기기 고르기</a>
-
-      <div class="age-chart" aria-labelledby="age-title">
-        <h2 id="age-title" class="note">출시부터 지금까지</h2>
-        <div class="age-row">
-          <a href="#ipad">아이패드 프로 10.5</a>
-          <div class="age-track"><div class="age-bar" data-year="2017" data-month="6"></div></div>
-        </div>
-        <div class="age-row">
-          <a href="#switch">스위치 라이트</a>
-          <div class="age-track"><div class="age-bar" data-year="2019" data-month="9"></div></div>
-        </div>
-        <div class="age-row">
-          <a href="#macbook">맥북 프로 16</a>
-          <div class="age-track"><div class="age-bar" data-year="2019" data-month="11"></div></div>
-        </div>
-        <div class="age-axis" aria-hidden="true"></div>
+  <main>
+    <section class="band hero">
+      <div class="wrap center">
+        <h1 class="t-hero">새 기기를 사기 전에,<br>서랍 속 기기부터.</h1>
+        <p class="t-lead">맥북 프로 16인치(2019), 아이패드 프로 10.5, 닌텐도 스위치 라이트. 출시된 지 몇 년이 지났지만 지금도 하루 일을 해낼 수 있어요. 무엇을 아직 잘하고, 어디서 한계가 오는지 정리했어요.</p>
+        <a class="btn-primary" href="#pick">내 용도에 맞는 기기 고르기</a>
       </div>
-    </div>
 
-    <section aria-labelledby="devices-title">
-      <h2 id="devices-title">기기 소개</h2>
-
-      <article class="device" id="macbook">
-        <h2>맥북 프로 16인치 (2019)</h2>
-        <p class="lead">인텔 칩을 쓴 마지막 16인치 맥북 프로예요. 큰 화면과 좋은 스피커, 다시 돌아온 시저 키보드 덕분에 지금도 문서 작업과 가벼운 개발에는 충분해요.</p>
-        <dl class="specs">
-          <dt>출시</dt><dd>2019년 11월</dd>
-          <dt>칩</dt><dd>인텔 9세대 Core i7(6코어) 또는 i9(8코어)</dd>
-          <dt>화면</dt><dd>16인치 Retina, 3072×1920</dd>
-          <dt>그래픽</dt><dd>AMD Radeon Pro 5300M / 5500M</dd>
-          <dt>메모리</dt><dd>16GB ~ 64GB</dd>
-          <dt>단자</dt><dd>Thunderbolt 3 4개, 3.5mm 이어폰</dd>
-          <dt>무게</dt><dd>약 2.0kg</dd>
-        </dl>
-        <h3>아직 좋은 점</h3>
-        <ul>
-          <li>실제 Esc 키가 있는 시저 키보드라 타자감이 안정적이에요.</li>
-          <li>16인치 화면과 6개 스피커는 지금 기준으로도 좋은 편이에요.</li>
-          <li>Windows를 Boot Camp로 직접 설치할 수 있어요. 인텔 맥만 가능한 일이에요.</li>
-        </ul>
-        <h3>알아 둘 점</h3>
-        <ul>
-          <li>애플은 macOS Tahoe(26)를 인텔 맥이 받는 마지막 macOS라고 밝혔어요. 그 뒤로는 보안 업데이트만 한동안 받아요.</li>
-          <li>무거운 작업을 하면 팬 소리가 크고 뜨거워져요. 배터리도 빨리 줄어요.</li>
-          <li>Apple 실리콘 전용 앱은 쓸 수 없어요.</li>
-        </ul>
-        <h3>중고로 살 때 확인할 것</h3>
-        <ul>
-          <li>배터리 사이클 수와 상태 (시스템 정보 → 전원)</li>
-          <li>화면 아래쪽 밝기 얼룩, 코팅 벗겨짐</li>
-          <li>터치 바와 Touch ID가 잘 되는지</li>
-        </ul>
-      </article>
-
-      <article class="device" id="ipad">
-        <h2>아이패드 프로 10.5</h2>
-        <p class="lead">120Hz ProMotion 화면을 처음 넣은 아이패드 프로예요. 화면이 부드럽고 애플 펜슬 1세대를 쓸 수 있어서, 필기와 PDF 읽기 기기로 아직 쓸 만해요.</p>
-        <dl class="specs">
-          <dt>출시</dt><dd>2017년 6월</dd>
-          <dt>칩</dt><dd>A10X Fusion</dd>
-          <dt>화면</dt><dd>10.5인치, 2224×1668, 최대 120Hz</dd>
-          <dt>펜·키보드</dt><dd>애플 펜슬 1세대, Smart Keyboard</dd>
-          <dt>단자</dt><dd>Lightning, 3.5mm 이어폰</dd>
-          <dt>잠금 해제</dt><dd>Touch ID (홈 버튼)</dd>
-          <dt>무게</dt><dd>약 469g (Wi-Fi 모델)</dd>
-        </dl>
-        <h3>아직 좋은 점</h3>
-        <ul>
-          <li>120Hz 화면이라 스크롤과 펜 반응이 지금 보급형 아이패드보다 부드러워요.</li>
-          <li>스피커가 4개라 영상 볼 때 소리가 좋아요.</li>
-          <li>이어폰 단자가 있어요.</li>
-        </ul>
-        <h3>알아 둘 점</h3>
-        <ul>
-          <li>마지막으로 받을 수 있는 버전은 iPadOS 17이에요. iPadOS 18부터는 지원하지 않아서, 앱이 하나둘 설치되지 않을 수 있어요.</li>
-          <li>애플 펜슬 1세대는 아이패드 Lightning 단자에 꽂아서 충전해요.</li>
-          <li>무거운 앱을 여러 개 띄우면 느려져요.</li>
-        </ul>
-        <h3>중고로 살 때 확인할 것</h3>
-        <ul>
-          <li>배터리 상태와 충전 단자가 헐겁지 않은지</li>
-          <li>화면 모서리 들뜸, 멍(밝은 점)</li>
-          <li>Touch ID와 홈 버튼이 잘 되는지</li>
-          <li>이전 주인의 Apple ID가 로그아웃됐는지</li>
-        </ul>
-      </article>
-
-      <article class="device" id="switch">
-        <h2>닌텐도 스위치 라이트</h2>
-        <p class="lead">들고 하는 데만 집중한 스위치예요. 가볍고 십자 버튼이 따로 있어서 2D 게임이나 이동 중에 하기 좋아요.</p>
-        <dl class="specs">
-          <dt>출시</dt><dd>2019년 9월</dd>
-          <dt>화면</dt><dd>5.5인치 LCD, 1280×720</dd>
-          <dt>저장 공간</dt><dd>32GB, microSD 카드로 늘릴 수 있음</dd>
-          <dt>배터리</dt><dd>약 3 ~ 7시간 (게임에 따라 다름)</dd>
-          <dt>무게</dt><dd>약 275g</dd>
-        </dl>
-        <h3>아직 좋은 점</h3>
-        <ul>
-          <li>스위치 게임 대부분을 그대로 할 수 있어요.</li>
-          <li>가볍고 작아서 가방에 늘 넣고 다니기 좋아요.</li>
-          <li>진짜 십자 버튼이 있어서 격투·플랫포머 게임에 편해요.</li>
-        </ul>
-        <h3>알아 둘 점</h3>
-        <ul>
-          <li>TV에 연결할 수 없어요. 들고 하는 모드만 돼요.</li>
-          <li>컨트롤러가 본체에 붙어 있어서, Joy-Con을 떼서 하는 게임은 Joy-Con을 따로 연결해야 해요.</li>
-          <li>스틱이 저절로 움직이는 쏠림이 생기면, 본체째 수리해야 해요.</li>
-        </ul>
-        <h3>중고로 살 때 확인할 것</h3>
-        <ul>
-          <li>설정 → 컨트롤러와 센서 → 스틱 보정에서 손을 뗐을 때 가운데로 돌아오는지</li>
-          <li>버튼이 눌린 채 걸리지 않는지</li>
-          <li>이전 주인의 닌텐도 계정이 지워졌는지</li>
-        </ul>
-      </article>
-    </section>
-
-    <section id="pick" aria-labelledby="pick-title">
-      <h2 id="pick-title">용도로 고르기</h2>
-      <p class="note">고르면 맞는 기기와 이유가 바로 아래에 나와요.</p>
-      <form class="picker box" onsubmit="return false">
-        <fieldset>
-          <legend>무엇에 가장 많이 쓸 건가요?</legend>
-          <div class="choices">
-            <label><input type="radio" name="use" value="code"><span class="btn">문서·코딩</span></label>
-            <label><input type="radio" name="use" value="note"><span class="btn">필기·PDF</span></label>
-            <label><input type="radio" name="use" value="video"><span class="btn">영상 보기</span></label>
-            <label><input type="radio" name="use" value="game"><span class="btn">이동 중 게임</span></label>
+      <div class="wrap">
+        <div class="age-chart" aria-labelledby="age-title">
+          <h2 id="age-title" class="t-small">출시부터 지금까지</h2>
+          <div class="age-row">
+            <a href="#ipad">아이패드 프로 10.5</a>
+            <div class="age-track"><div class="age-bar" data-year="2017" data-month="6"></div></div>
           </div>
-        </fieldset>
-        <div class="answer" aria-live="polite"></div>
-      </form>
+          <div class="age-row">
+            <a href="#switch">스위치 라이트</a>
+            <div class="age-track"><div class="age-bar" data-year="2019" data-month="9"></div></div>
+          </div>
+          <div class="age-row">
+            <a href="#macbook">맥북 프로 16</a>
+            <div class="age-track"><div class="age-bar" data-year="2019" data-month="11"></div></div>
+          </div>
+          <div class="age-axis t-small" aria-hidden="true"></div>
+        </div>
+      </div>
     </section>
 
-    <footer>
-      <p class="note">제조사와 관계없는 개인 정리 페이지예요. 사양은 기본 모델 기준이고, 구성에 따라 다를 수 있어요.</p>
-      <p class="note">지원 일정과 사양은 사기 전에 제조사 공식 자료를 꼭 확인하세요.</p>
-    </footer>
+    <section class="band band-surface device" id="macbook" aria-labelledby="macbook-title">
+      <div class="wrap">
+        <div class="center">
+          <p class="t-small">2019년 11월 출시</p>
+          <h2 id="macbook-title" class="t-device">맥북 프로 16인치 (2019)</h2>
+          <span class="pick-mark" hidden>추천</span>
+          <p class="t-lead">인텔 칩을 쓴 마지막 16인치 맥북 프로예요. 큰 화면과 좋은 스피커, 다시 돌아온 시저 키보드 덕분에 문서 작업과 가벼운 개발에는 아직 충분해요.</p>
+        </div>
+        <div class="specs box">
+          <dl>
+            <div class="row"><dt>칩</dt><dd>인텔 9세대 Core i7(6코어) 또는 i9(8코어)</dd></div>
+            <div class="row"><dt>화면</dt><dd>16인치 Retina, 3072×1920</dd></div>
+            <div class="row"><dt>그래픽</dt><dd>AMD Radeon Pro 5300M / 5500M</dd></div>
+            <div class="row"><dt>메모리</dt><dd>16GB ~ 64GB</dd></div>
+            <div class="row"><dt>단자</dt><dd>Thunderbolt 3 4개, 3.5mm 이어폰</dd></div>
+            <div class="row"><dt>무게</dt><dd>약 2.0kg</dd></div>
+          </dl>
+        </div>
+        <div class="notes">
+          <div>
+            <h3>아직 좋은 점</h3>
+            <ul>
+              <li>실제 Esc 키가 있는 시저 키보드라 타자감이 안정적이에요.</li>
+              <li>16인치 화면과 6개 스피커는 지금 기준으로도 좋은 편이에요.</li>
+              <li>Windows를 Boot Camp로 직접 설치할 수 있어요. 인텔 맥만 가능한 일이에요.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>알아 둘 점</h3>
+            <ul>
+              <li>애플은 macOS Tahoe(26)를 인텔 맥이 받는 마지막 macOS라고 밝혔어요. 그 뒤로는 보안 업데이트만 한동안 받아요.</li>
+              <li>무거운 작업을 하면 팬 소리가 크고 뜨거워져요. 배터리도 빨리 줄어요.</li>
+              <li>Apple 실리콘 전용 앱은 쓸 수 없어요.</li>
+            </ul>
+          </div>
+          <div class="full">
+            <h3>중고로 살 때 확인할 것</h3>
+            <ul>
+              <li>배터리 사이클 수와 상태 (시스템 정보 → 전원)</li>
+              <li>화면 아래쪽 밝기 얼룩, 코팅 벗겨짐</li>
+              <li>터치 바와 Touch ID가 잘 되는지</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band device" id="ipad" aria-labelledby="ipad-title">
+      <div class="wrap">
+        <div class="center">
+          <p class="t-small">2017년 6월 출시</p>
+          <h2 id="ipad-title" class="t-device">아이패드 프로 10.5</h2>
+          <span class="pick-mark" hidden>추천</span>
+          <p class="t-lead">120Hz ProMotion 화면을 처음 넣은 아이패드 프로예요. 화면이 부드럽고 애플 펜슬 1세대를 쓸 수 있어서, 필기와 PDF 읽기 기기로 아직 쓸 만해요.</p>
+        </div>
+        <div class="specs box">
+          <dl>
+            <div class="row"><dt>칩</dt><dd>A10X Fusion</dd></div>
+            <div class="row"><dt>화면</dt><dd>10.5인치, 2224×1668, 최대 120Hz</dd></div>
+            <div class="row"><dt>펜·키보드</dt><dd>애플 펜슬 1세대, Smart Keyboard</dd></div>
+            <div class="row"><dt>단자</dt><dd>Lightning, 3.5mm 이어폰</dd></div>
+            <div class="row"><dt>잠금 해제</dt><dd>Touch ID (홈 버튼)</dd></div>
+            <div class="row"><dt>무게</dt><dd>약 469g (Wi-Fi 모델)</dd></div>
+          </dl>
+        </div>
+        <div class="notes">
+          <div>
+            <h3>아직 좋은 점</h3>
+            <ul>
+              <li>120Hz 화면이라 스크롤과 펜 반응이 지금 보급형 아이패드보다 부드러워요.</li>
+              <li>스피커가 4개라 영상 볼 때 소리가 좋아요.</li>
+              <li>이어폰 단자가 있어요.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>알아 둘 점</h3>
+            <ul>
+              <li>마지막으로 받을 수 있는 버전은 iPadOS 17이에요. iPadOS 18부터는 지원하지 않아서, 앱이 하나둘 설치되지 않을 수 있어요.</li>
+              <li>애플 펜슬 1세대는 아이패드 Lightning 단자에 꽂아서 충전해요.</li>
+              <li>무거운 앱을 여러 개 띄우면 느려져요.</li>
+            </ul>
+          </div>
+          <div class="full">
+            <h3>중고로 살 때 확인할 것</h3>
+            <ul>
+              <li>배터리 상태와 충전 단자가 헐겁지 않은지</li>
+              <li>화면 모서리 들뜸, 멍(밝은 점)</li>
+              <li>Touch ID와 홈 버튼이 잘 되는지</li>
+              <li>이전 주인의 Apple ID가 로그아웃됐는지</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band band-surface device" id="switch" aria-labelledby="switch-title">
+      <div class="wrap">
+        <div class="center">
+          <p class="t-small">2019년 9월 출시</p>
+          <h2 id="switch-title" class="t-device">닌텐도 스위치 라이트</h2>
+          <span class="pick-mark" hidden>추천</span>
+          <p class="t-lead">들고 하는 데만 집중한 스위치예요. 가볍고 십자 버튼이 따로 있어서 2D 게임이나 이동 중에 하기 좋아요.</p>
+        </div>
+        <div class="specs box">
+          <dl>
+            <div class="row"><dt>화면</dt><dd>5.5인치 LCD, 1280×720</dd></div>
+            <div class="row"><dt>저장 공간</dt><dd>32GB, microSD 카드로 늘릴 수 있음</dd></div>
+            <div class="row"><dt>배터리</dt><dd>약 3 ~ 7시간 (게임에 따라 다름)</dd></div>
+            <div class="row"><dt>무게</dt><dd>약 275g</dd></div>
+          </dl>
+        </div>
+        <div class="notes">
+          <div>
+            <h3>아직 좋은 점</h3>
+            <ul>
+              <li>스위치 게임 대부분을 그대로 할 수 있어요.</li>
+              <li>가볍고 작아서 가방에 늘 넣고 다니기 좋아요.</li>
+              <li>진짜 십자 버튼이 있어서 격투·플랫포머 게임에 편해요.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>알아 둘 점</h3>
+            <ul>
+              <li>TV에 연결할 수 없어요. 들고 하는 모드만 돼요.</li>
+              <li>컨트롤러가 본체에 붙어 있어서, Joy-Con을 떼서 하는 게임은 Joy-Con을 따로 연결해야 해요.</li>
+              <li>스틱이 저절로 움직이는 쏠림이 생기면, 본체째 수리해야 해요.</li>
+            </ul>
+          </div>
+          <div class="full">
+            <h3>중고로 살 때 확인할 것</h3>
+            <ul>
+              <li>설정 → 컨트롤러와 센서 → 스틱 보정에서 손을 뗐을 때 가운데로 돌아오는지</li>
+              <li>버튼이 눌린 채 걸리지 않는지</li>
+              <li>이전 주인의 닌텐도 계정이 지워졌는지</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" id="pick" aria-labelledby="pick-title">
+      <div class="wrap">
+        <div class="center">
+          <h2 id="pick-title" class="t-section">용도로 고르기</h2>
+          <p class="t-lead">고르면 맞는 기기와 이유가 바로 아래에 나와요.</p>
+        </div>
+        <form class="picker box" onsubmit="return false">
+          <fieldset>
+            <legend>무엇에 가장 많이 쓸 건가요?</legend>
+            <div class="choices">
+              <label><input type="radio" name="use" value="code"><span>문서·코딩</span></label>
+              <label><input type="radio" name="use" value="note"><span>필기·PDF</span></label>
+              <label><input type="radio" name="use" value="video"><span>영상 보기</span></label>
+              <label><input type="radio" name="use" value="game"><span>이동 중 게임</span></label>
+            </div>
+          </fieldset>
+          <div class="answer" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
   </main>
+
+  <footer class="band band-surface">
+    <div class="wrap t-small">
+      <p>제조사와 관계없는 개인 정리 페이지예요.</p>
+      <p>사양은 기본 모델 기준이고, 구성에 따라 다를 수 있어요.</p>
+      <p>지원 일정과 사양은 사기 전에 제조사 공식 자료를 꼭 확인하세요.</p>
+    </div>
+  </footer>
 
   <script>
     // 나이 막대: 출시 연월부터 지금까지
     (function () {
       var now = new Date();
       var nowYear = now.getFullYear();
+      var nowPoint = nowYear + now.getMonth() / 12;
       var start = 2017;
-      var span = (nowYear + now.getMonth() / 12) - start;
+      var span = nowPoint - start;
 
       document.querySelectorAll('.age-bar').forEach(function (bar) {
         var released = Number(bar.dataset.year) + (Number(bar.dataset.month) - 1) / 12;
-        var years = (nowYear + now.getMonth() / 12) - released;
         bar.style.left = ((released - start) / span * 100) + '%';
-        bar.textContent = Math.floor(years) + '년째';
+        bar.textContent = Math.floor(nowPoint - released) + '년째';
       });
 
       var axis = document.querySelector('.age-axis');
@@ -293,14 +366,13 @@
         input.addEventListener('change', function () {
           var a = ANSWERS[input.value];
           document.querySelectorAll('.device').forEach(function (d) {
-            d.classList.toggle('is-picked', d.id === a.id);
+            d.querySelector('.pick-mark').hidden = d.id !== a.id;
           });
-          answer.innerHTML = '';
+
           var p1 = document.createElement('p');
           var strong = document.createElement('strong');
           strong.textContent = a.name;
-          p1.appendChild(strong);
-          p1.appendChild(document.createTextNode('가 맞아요.'));
+          p1.append(strong, '가 맞아요.');
           var p2 = document.createElement('p');
           p2.textContent = a.why;
           var link = document.createElement('a');
@@ -308,7 +380,7 @@
           link.textContent = a.name + ' 자세히 보기';
           var p3 = document.createElement('p');
           p3.appendChild(link);
-          answer.append(p1, p2, p3);
+          answer.replaceChildren(p1, p2, p3);
         });
       });
     })();
