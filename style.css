@@ -2,13 +2,12 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 :root {
-  --primary: #0071E3;
-  --primary-press: #0058B0;
-  --link: #0066CC;
+  --primary: #1D1D1F;
+  --primary-press: #424245;
+  --link: #1D1D1F;
   --ink: #1D1D1F;
   --muted: #6E6E73;
   --paper: #FFFFFF;
-  --surface: #F5F5F7;
   --line: #D2D2D7;
   --warn: #B4232C;
   --on-primary: #FFFFFF;
@@ -69,9 +68,10 @@ h3 { font-size: 17px; line-height: 26px; font-weight: 600; }
   .t-lead { font-size: 21px; line-height: 32px; }
 }
 
-a { color: var(--link); text-decoration: none; }
+/* 링크는 색이 아니라 밑줄로 구분한다 */
+a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
 @media (hover: hover) and (pointer: fine) {
-  a:hover { text-decoration: underline; }
+  a:hover { text-decoration-thickness: 2px; }
 }
 
 :focus-visible {
@@ -85,9 +85,10 @@ a { color: var(--link); text-decoration: none; }
   padding: 0 var(--gutter);
 }
 
-/* 섹션 — 구분은 바탕색 교대로 */
+/* 섹션 — 바탕은 모두 흰색, 구분은 1px 선으로 */
 .band { padding: var(--section-y) 0; background: var(--paper); }
-.band-surface { background: var(--surface); }
+.band + .band,
+main + .band { border-top: 1px solid var(--line); }
 
 /* 공통 헤더 — 고정하지 않는다 */
 .site-header { border-bottom: 1px solid var(--line); background: var(--paper); }
@@ -97,7 +98,7 @@ a { color: var(--link); text-decoration: none; }
   gap: 24px;
   min-height: 48px;
 }
-.site-name { flex: none; color: var(--ink); font-size: 14px; font-weight: 600; }
+.site-name { flex: none; color: var(--ink); font-size: 14px; font-weight: 600; text-decoration: none; }
 .site-nav {
   display: flex;
   gap: 20px;
@@ -111,10 +112,11 @@ a { color: var(--link); text-decoration: none; }
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  color: var(--ink);
+  color: var(--muted);
+  text-decoration: none;
   white-space: nowrap;
 }
-.site-nav a[aria-current="page"] { color: var(--primary); }
+.site-nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
 @media (min-width: 734px) {
   .site-nav { margin-left: auto; }
 }
@@ -134,7 +136,7 @@ a { color: var(--link); text-decoration: none; }
   text-decoration: none;
   cursor: pointer;
 }
-.btn { background: var(--surface); color: var(--ink); }
+.btn { background: var(--paper); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
 .btn-primary { background: var(--primary); color: var(--on-primary); }
 .btn-primary:active { background: var(--primary-press); }
 @media (hover: hover) and (pointer: fine) {
@@ -143,10 +145,10 @@ a { color: var(--link); text-decoration: none; }
 
 .box {
   border-radius: var(--radius-card);
-  background: var(--surface);
+  border: 1px solid var(--line);
+  background: var(--paper);
   padding: 24px;
 }
-.band-surface .box { background: var(--paper); }
 @media (min-width: 734px) {
   .box { padding: 32px; }
 }
