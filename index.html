@@ -59,7 +59,29 @@
     .device .pick-mark[hidden] { display: none; }
     .device .t-small:first-child { margin-bottom: 8px; }
 
-    .specs { max-width: 720px; margin: 40px auto 0; }
+    /* 제품 사진(왼쪽) + 사양 상자(오른쪽) */
+    .spec-row {
+      display: grid;
+      gap: 24px;
+      max-width: 980px;
+      margin: 40px auto 0;
+    }
+    @media (min-width: 734px) {
+      .spec-row { grid-template-columns: 2fr 3fr; gap: 40px; align-items: start; }
+    }
+    .photo { margin: 0; }
+    .photo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+      border-radius: var(--radius-card);
+      outline: 1px solid var(--hairline);
+      outline-offset: -1px;
+    }
+    .photo figcaption { margin-top: 8px; }
+    .photo figcaption a { color: var(--muted); }
     .specs dl { margin: 0; }
     .specs .row {
       display: grid;
@@ -78,7 +100,7 @@
     .notes {
       display: grid;
       gap: 40px;
-      max-width: 720px;
+      max-width: 980px;
       margin: 40px auto 0;
     }
     @media (min-width: 734px) {
@@ -166,7 +188,12 @@
           <span class="pick-mark" hidden>추천</span>
           <p class="t-lead">인텔 칩을 쓴 마지막 16인치 맥북 프로예요. 큰 화면과 좋은 스피커, 다시 돌아온 시저 키보드 덕분에 문서 작업과 가벼운 개발에는 아직 충분해요.</p>
         </div>
-        <div class="specs box">
+        <div class="spec-row">
+          <figure class="photo">
+            <img src="images/macbook-pro-16-2019.jpg" alt="맥북 프로 16인치(2019)의 키보드와 터치 바를 비스듬히 찍은 사진" width="960" height="720" loading="lazy">
+            <figcaption class="t-small">사진: Jack Baty, <a href="https://commons.wikimedia.org/wiki/File:2019_16-inch_MacBook_Pro_(49183242933).jpg">위키미디어 공용</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/deed.ko">CC BY-SA 2.0</a> · 크기 줄임</figcaption>
+          </figure>
+          <div class="specs box">
           <dl>
             <div class="row"><dt>칩</dt><dd>인텔 9세대 Core i7(6코어) 또는 i9(8코어)</dd></div>
             <div class="row"><dt>화면</dt><dd>16인치 Retina, 3072×1920</dd></div>
@@ -175,6 +202,7 @@
             <div class="row"><dt>단자</dt><dd>Thunderbolt 3 4개, 3.5mm 이어폰</dd></div>
             <div class="row"><dt>무게</dt><dd>약 2.0kg</dd></div>
           </dl>
+          </div>
         </div>
         <div class="notes">
           <div>
@@ -213,7 +241,12 @@
           <span class="pick-mark" hidden>추천</span>
           <p class="t-lead">120Hz ProMotion 화면을 처음 넣은 아이패드 프로예요. 화면이 부드럽고 애플 펜슬 1세대를 쓸 수 있어서, 필기와 PDF 읽기 기기로 아직 쓸 만해요.</p>
         </div>
-        <div class="specs box">
+        <div class="spec-row">
+          <figure class="photo">
+            <img src="images/ipad-pro-10-5.jpg" alt="Smart Keyboard에 연결해 세워 둔 은색 아이패드 프로 10.5 사진" width="960" height="720" loading="lazy">
+            <figcaption class="t-small">사진: Tatsuo Yamashita, <a href="https://commons.wikimedia.org/wiki/File:IPad_Pro_10.5_unboxing_(38618066655).jpg">위키미디어 공용</a>, <a href="https://creativecommons.org/licenses/by/2.0/deed.ko">CC BY 2.0</a> · 크기 줄임</figcaption>
+          </figure>
+          <div class="specs box">
           <dl>
             <div class="row"><dt>칩</dt><dd>A10X Fusion</dd></div>
             <div class="row"><dt>화면</dt><dd>10.5인치, 2224×1668, 최대 120Hz</dd></div>
@@ -222,6 +255,7 @@
             <div class="row"><dt>잠금 해제</dt><dd>Touch ID (홈 버튼)</dd></div>
             <div class="row"><dt>무게</dt><dd>약 469g (Wi-Fi 모델)</dd></div>
           </dl>
+          </div>
         </div>
         <div class="notes">
           <div>
@@ -261,13 +295,19 @@
           <span class="pick-mark" hidden>추천</span>
           <p class="t-lead">들고 하는 데만 집중한 스위치예요. 가볍고 십자 버튼이 따로 있어서 2D 게임이나 이동 중에 하기 좋아요.</p>
         </div>
-        <div class="specs box">
+        <div class="spec-row">
+          <figure class="photo">
+            <img src="images/switch-lite.jpg" alt="회색 닌텐도 스위치 라이트를 비스듬히 위에서 찍은 사진" width="960" height="720" loading="lazy">
+            <figcaption class="t-small">사진: DYVER, <a href="https://commons.wikimedia.org/wiki/File:Nintendo_Switch_Lite_Grey_-_01.jpg">위키미디어 공용</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ko">CC BY-SA 4.0</a> · 크기 줄임</figcaption>
+          </figure>
+          <div class="specs box">
           <dl>
             <div class="row"><dt>화면</dt><dd>5.5인치 LCD, 1280×720</dd></div>
             <div class="row"><dt>저장 공간</dt><dd>32GB, microSD 카드로 늘릴 수 있음</dd></div>
             <div class="row"><dt>배터리</dt><dd>약 3 ~ 7시간 (게임에 따라 다름)</dd></div>
             <div class="row"><dt>무게</dt><dd>약 275g</dd></div>
           </dl>
+          </div>
         </div>
         <div class="notes">
           <div>
