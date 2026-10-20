@@ -1,0 +1,120 @@
+#!/bin/sh
+# 커밋 메시지에 [어디]·[영향]을 자동으로 채운다. 규칙: 커밋_규칙.md
+# 켜기(한 번만): git config core.hooksPath .githooks
+
+msg_file="$1"
+source="$2"
+
+# 합치기·되돌리기·amend는 git이 만든 메시지를 그대로 둔다
+case "$source" in merge|squash|commit) exit 0 ;; esac
+# 이미 규칙대로 적었으면 건드리지 않는다
+grep -q '^\[어디\]' "$msg_file" && exit 0
+
+git_q() { git -c core.quotepath=off "$@"; }
+
+files=$(git_q diff --cached --name-only)
+[ -z "$files" ] && exit 0
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+# 파일 안에서 바뀐 구역 이름을 뽑는다 (html: 섹션 id·헤더·스타일·스크립트 / css: 주석 제목·:root / md: 제목)
+regions_of() {
+  f="$1"
+  git_q diff --cached -U0 -- "$f" | sed -n 's/^@@ -[0-9,]* +\([0-9]*\).*/\1/p' > "$tmp/hunks"
+  [ -s "$tmp/hunks" ] || return
+  case "$f" in
+    *.html) kind=html ;;
+    *.css) kind=css ;;
+    *.md) kind=md ;;
+    *) return ;;
+  esac
+  git_q show ":$f" 2>/dev/null | awk -v kind="$kind" '
+    NR == FNR { h[$1] = 1; next }
+    {
+      line = $0
+      if (kind == "html") {
+        if (line ~ /<style/) { saved = r; r = "스타일(<style>)" }
+        else if (line ~ /<script/) { saved = r; r = "스크립트" }
+        else if (line ~ /<header/) r = "헤더"
+        else if (line ~ /<footer/) r = "푸터"
+        else if (line ~ /<(section|article|form)/) {
+          if (match(line, /id="[^"]*"/)) r = "#" substr(line, RSTART + 4, RLENGTH - 5)
+          else if (match(line, /class="[^"]*"/)) { n = split(substr(line, RSTART + 7, RLENGTH - 8), c, " "); r = c[n] }
+        }
+      } else if (kind == "css") {
+        if (line ~ /^:root/) r = ":root 토큰"
+        else if (line ~ /^\/\* .* \*\/$/) { r = line; sub(/^\/\* /, "", r); sub(/ \*\/$/, "", r); sub(/ — .*/, "", r) }
+      } else if (kind == "md") {
+        if (line ~ /^---$/ && FNR == 1) r = "맨 위 토큰"
+        else if (line ~ /^#+ /) { r = line; sub(/^#+ /, "", r) }
+      }
+      if (FNR in h) print (r == "" ? "맨 위" : r)
+      if (kind == "html" && line ~ /<\/(style|script)>/) r = saved
+    }
+  ' "$tmp/hunks" - | awk '!seen[$0]++' | paste -sd, - | sed 's/,/, /g'
+}
+
+: > "$tmp/where"
+: > "$tmp/impact"
+echo "$files" | while IFS= read -r f; do
+  stat=$(git_q diff --cached --numstat -- "$f" | awk '{ print "+" $1 " -" $2 }')
+  if [ -n "$(git_q diff --cached --diff-filter=A --name-only -- "$f")" ]; then
+    regions="새 파일"
+  else
+    regions=$(regions_of "$f")
+  fi
+  if [ -n "$regions" ]; then
+    echo "- $f: $regions ($stat)" >> "$tmp/where"
+  else
+    echo "- $f ($stat)" >> "$tmp/where"
+  fi
+
+  case "$f" in
+    style.css)
+      echo "- style.css → 모든 페이지에 적용되는 공통 스타일" >> "$tmp/impact"
+      case "$regions" in *":root"*)
+        echo "- :root 토큰이 바뀜 → 디자인_규칙.md 맨 위 토큰과 값이 같은지 확인" >> "$tmp/impact" ;;
+      esac ;;
+    *.html)
+      echo "- $f → 이 페이지만" >> "$tmp/impact"
+      case "$regions" in *"스크립트"*)
+        echo "- $f 스크립트가 바뀜 → 나이 막대·용도 고르기가 그대로 되는지 확인" >> "$tmp/impact" ;;
+      esac ;;
+    디자인_규칙.md)
+      echo "- 디자인_규칙.md → 코드 영향 없음. 토큰 값을 바꿨다면 style.css :root도 같이 바꿀 것" >> "$tmp/impact" ;;
+    *.md)
+      echo "- $f → 문서만, 코드 영향 없음" >> "$tmp/impact" ;;
+    .gitattributes)
+      echo "- .gitattributes → 파일 줄바꿈 처리만, 사이트 동작 영향 없음" >> "$tmp/impact" ;;
+    .githooks/*)
+      echo "- $f → 이 저장소에서 커밋하는 모든 사람의 커밋 메시지" >> "$tmp/impact" ;;
+    *)
+      echo "- $f → 영향 직접 확인 필요" >> "$tmp/impact" ;;
+  esac
+done
+
+{
+  if [ "$source" = "message" ]; then
+    # -m 으로 제목을 줬으면 그 아래에 붙인다
+    cat "$msg_file"
+    echo
+  else
+    # 편집기로 쓰는 경우: 첫 줄은 비워 두고 제목을 적게 한다
+    echo
+    echo
+  fi
+  echo "[어디]"
+  cat "$tmp/where"
+  if [ "$source" != "message" ]; then
+    echo "[무엇이 어떻게]"
+    echo "- "
+  fi
+  echo "[영향]"
+  cat "$tmp/impact"
+  if [ "$source" != "message" ]; then
+    echo
+    grep '^#' "$msg_file"
+  fi
+} > "$tmp/msg"
+cp "$tmp/msg" "$msg_file"
